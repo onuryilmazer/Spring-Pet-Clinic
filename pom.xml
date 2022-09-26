@@ -17,7 +17,7 @@
 
     <groupId>com.onuryilmazer</groupId>
     <artifactId>Spring-Pet-Clinic</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.2-SNAPSHOT</version>
     <name>Spring-Pet-Clinic</name>
     <description>Spring-Pet-Clinic</description>
     <properties>
@@ -26,7 +26,7 @@
 
     <scm>
         <developerConnection>scm:git:git@github.com:onuryilmazer/Spring-Pet-Clinic.git</developerConnection>
-        <tag>Spring-Pet-Clinic-0.0.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <build>
