@@ -3,8 +3,6 @@ package com.onuryilmazer.springpetclinic.bootstrap;
 import com.onuryilmazer.springpetclinic.model.Owner;
 import com.onuryilmazer.springpetclinic.services.OwnerService;
 import com.onuryilmazer.springpetclinic.services.VetService;
-import com.onuryilmazer.springpetclinic.services.map.OwnerServiceMap;
-import com.onuryilmazer.springpetclinic.services.map.VetServiceMap;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import com.onuryilmazer.springpetclinic.model.Vet;
@@ -14,9 +12,9 @@ public class DataInitializer implements CommandLineRunner {
     private final OwnerService ownerService;
     private final VetService vetService;
 
-    public DataInitializer() {
-        ownerService = new OwnerServiceMap();
-        vetService = new VetServiceMap();
+    public DataInitializer(OwnerService ownerService, VetService vetService) {
+        this.ownerService = ownerService;
+        this.vetService = vetService;
         System.out.println("Data initializer bean created.");
     }
 
