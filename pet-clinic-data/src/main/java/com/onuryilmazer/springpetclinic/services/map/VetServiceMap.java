@@ -1,14 +1,20 @@
 package com.onuryilmazer.springpetclinic.services.map;
 
-import com.onuryilmazer.springpetclinic.model.Owner;
 import com.onuryilmazer.springpetclinic.model.Vet;
 import com.onuryilmazer.springpetclinic.services.VetService;
+import com.onuryilmazer.springpetclinic.services.VetSpecialtyService;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 @Service
 public class VetServiceMap extends AbstractMapService<Vet, Long> implements VetService {
+    private final VetSpecialtyService vetSpecialtyService;
+
+    public VetServiceMap(VetSpecialtyService vetSpecialtyService) {
+        this.vetSpecialtyService = vetSpecialtyService;
+    }
+
     @Override
     public Set<Vet> findAll() {
         return super.findAll();
@@ -21,6 +27,12 @@ public class VetServiceMap extends AbstractMapService<Vet, Long> implements VetS
 
     @Override
     public Vet save(Vet object) {
+        object.getSpecialties().forEach(specialty -> {
+            if (specialty.getId() == null) {
+                specialty = vetSpecialtyService.save(specialty);
+            }
+        });
+
         return super.save(object);
     }
 

@@ -1,15 +1,9 @@
 package com.onuryilmazer.springpetclinic.bootstrap;
 
-import com.onuryilmazer.springpetclinic.model.Owner;
-import com.onuryilmazer.springpetclinic.model.Pet;
-import com.onuryilmazer.springpetclinic.services.OwnerService;
-import com.onuryilmazer.springpetclinic.model.PetType;
-import com.onuryilmazer.springpetclinic.services.PetService;
-import com.onuryilmazer.springpetclinic.services.PetTypeService;
-import com.onuryilmazer.springpetclinic.services.VetService;
+import com.onuryilmazer.springpetclinic.model.*;
+import com.onuryilmazer.springpetclinic.services.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import com.onuryilmazer.springpetclinic.model.Vet;
 
 import java.time.LocalDate;
 
@@ -20,16 +14,25 @@ public class DataInitializer implements CommandLineRunner {
     private final PetService petService;
     private final PetTypeService petTypeService;
 
-    public DataInitializer(OwnerService ownerService, VetService vetService, PetService petService, PetTypeService petTypeService) {
+    private final VetSpecialtyService vetSpecialtyService;
+
+    public DataInitializer(OwnerService ownerService, VetService vetService, PetService petService, PetTypeService petTypeService, VetSpecialtyService vetSpecialtyService) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petService = petService;
         this.petTypeService = petTypeService;
+        this.vetSpecialtyService = vetSpecialtyService;
         System.out.println("Data initializer bean created.");
     }
 
     @Override
     public void run(String... args) throws Exception {
+        if (petTypeService.findAll().size() == 0) {
+            loadData();
+        }
+    }
+
+    private void loadData() {
         Owner owner1 = new Owner();
         owner1.setId(1L);
         owner1.setFirstName("John");
@@ -50,16 +53,34 @@ public class DataInitializer implements CommandLineRunner {
 
         System.out.println("Owners loaded.");
 
+        VetSpecialty radiology = new VetSpecialty();
+        radiology.setSpecialtyName("Radiology");
+        radiology = vetSpecialtyService.save(radiology);
+
+        VetSpecialty surgery = new VetSpecialty();
+        surgery.setSpecialtyName("Surgery");
+        surgery = vetSpecialtyService.save(surgery);
+
+        VetSpecialty dentistry = new VetSpecialty();
+        dentistry.setSpecialtyName("Dentistry");
+        dentistry = vetSpecialtyService.save(dentistry);
+
+        System.out.println("Specialties loaded.");
+
+
         Vet vet1 = new Vet();
         vet1.setId(1L);
         vet1.setFirstName("Ali");
         vet1.setLastName("Veli");
+        vet1.getSpecialties().add(radiology);
+        vet1.getSpecialties().add(dentistry);
         vet1 = vetService.save(vet1);
 
         Vet vet2 = new Vet();
         vet2.setId(2L);
         vet2.setFirstName("Ayse");
         vet2.setLastName("Merve");
+        vet2.getSpecialties().add(surgery);
         vet2 = vetService.save(vet2);
 
         System.out.println("Veterinarians loaded.");
